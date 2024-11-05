@@ -20,7 +20,6 @@ class Currency(models.TextChoices):
     GBP = 'GBP', 'GBP'
     AUD = 'AUD', 'AUD'
     CAD = 'CAD', 'CAD'
-    CNY = 'CNY', 'CNY'
     JPY = 'JPY', 'JPY'
     RUB = 'RUB', 'RUB'
     KRW = 'KRW', 'KRW'
@@ -75,7 +74,7 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     total_amount = models.FloatField(null=True)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
-    status = models.CharField(max_length=2, choices=OrderStatus.choices, default=OrderStatus.PENDING)
+    status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
     shipping_address = models.TextField(null=True)
     billing_address = models.TextField(null=True)
     discount_amount = models.FloatField(null=True)
@@ -91,12 +90,12 @@ class Transaction(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     amount = models.FloatField(null=True)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
-    status = models.CharField(max_length=2, choices=OrderStatus.choices, default=OrderStatus.PENDING)
+    status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment_getway = models.ForeignKey(PaymentGetway, on_delete=models.CASCADE)
     transcation_date = models.DateTimeField(null=True)
     getway_response = models.JSONField(null=True)
-    paymment_method = models.CharField(max_length=2, choices=PaymentMethod.choices, default=PaymentMethod.CREDIT_CARD)
+    paymment_method = models.CharField(max_length=100, choices=PaymentMethod.choices, default=PaymentMethod.CREDIT_CARD)
     retry_count = models.IntegerField(null=True)
     def __str__(self):
         return self.status
@@ -109,12 +108,12 @@ class Payment(models.Model):
     amount = models.FloatField(null=True)
     payment_date = models.DateTimeField(null=True)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
-    status = models.CharField(max_length=2, choices=OrderStatus.choices, default=OrderStatus.PENDING)
+    status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment_getway = models.ForeignKey(PaymentGetway, on_delete=models.CASCADE)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
-    paymment_method = models.CharField(max_length=2, choices=PaymentMethod.choices, default=PaymentMethod.CREDIT_CARD)
-    transaction_refrence = models.CharField(null=True)
+    paymment_method = models.CharField(max_length=100,choices=PaymentMethod.choices, default=PaymentMethod.CREDIT_CARD)
+    transaction_refrence = models.CharField(max_length=200,null=True)
     refund_amount = models.FloatField(null=True)
     getway_response = models.JSONField(null=True)
     
