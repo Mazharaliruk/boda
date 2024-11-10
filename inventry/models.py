@@ -6,6 +6,9 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     description = models.TextField(null=True)
     image_url = models.URLField(null=True)
+    is_acgtive = models.BooleanField(default=True)
+    slug = models.SlugField(null=True)
+    
     
 def __str__(self):
     return self.name

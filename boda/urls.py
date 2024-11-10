@@ -22,6 +22,6 @@ urlpatterns = [
     path('sales/v1/', include('sales.urls')),
     # path('core/', include('core.urls')),
     # path('reports/', include('reports.urls')),
-    # path('inventry/', include('inventry.urls')),
+    path('inventry/v1/', include('inventry.urls')),
     
 ]
