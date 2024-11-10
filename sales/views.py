@@ -1,6 +1,6 @@
 from django.db.models import Q
 from rest_framework import viewsets
-from .models import Order
+from .models import Order, Transaction, Payment, PaymentGetway
 from .serializer import OrderSerializer, TransactionSerializer, PaymentGetwaySerializer,PaymentSerializer
 
 
@@ -12,20 +12,20 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
 class TransactionViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
     
     
     
 
 class PaymentViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
     
     
     
 class PaymentGetwayViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    queryset = PaymentGetway.objects.all()
     serializer_class = PaymentGetwaySerializer
     
 
