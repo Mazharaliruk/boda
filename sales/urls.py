@@ -1,9 +1,13 @@
-from django.urls import path
-from .views import orders
+from django.urls import path, include
+from rest_framework import routers
+from sales.views import OrderViewSet, TransactionViewSet, PaymentViewSet, PaymentGetwayViewSet
 
-#GET /api/order_list/?status=COMPLETED&currency=INR&min_amount=100&max_amount=200&min_discount=10&max_discount=20
-# 
-# URLS
+router = routers.DefaultRouter()
+router.register(r'orders', OrderViewSet, basename='order')
+router.register(r'transactions', TransactionViewSet, basename='transaction')
+router.register(r'payments', PaymentViewSet, basename='payment')
+router.register(r'paymentgetways', PaymentGetwayViewSet, basename='paymentgetway')
+
 urlpatterns = [
-    path('orders/', orders, name='orders')
+    path('', include(router.urls)),
 ]

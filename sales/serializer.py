@@ -1,5 +1,13 @@
 from rest_framework import serializers
-from .models import  Order, Transaction, Payment
+from .models import  Order, Transaction, Payment, PaymentGetway
+
+
+
+class PaymentGetwaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentGetway
+        fields = '__all__'
+
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
