@@ -1,6 +1,5 @@
 """
 URL configuration for boda project.
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
 Examples:
@@ -20,8 +19,9 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sales/v1/', include('sales.urls')),
-    # path('core/', include('core.urls')),
+    path('core/v1/', include('core.urls')),
     # path('reports/', include('reports.urls')),
     path('inventry/v1/', include('inventry.urls')),
+    path('api/', include('account.urls')),
     
 ]
