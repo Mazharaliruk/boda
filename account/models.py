@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from core.models import BusinessType
 
 # Create your models here.
 
@@ -90,3 +93,43 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.role == 'admin'
+
+
+# Profile Models
+class VendorProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to='vendor_profiles/', blank=True, null=True)
+    business_name = models.CharField(max_length=255)
+    business_type = models.ForeignKey(BusinessType, on_delete=models.CASCADE, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+
+class CustomerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to='customer_profiles/', blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)  # Add more fields as needed
+
+class AdminProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to='admin_profiles/', blank=True, null=True)
+    permissions = models.TextField(blank=True)  # Add fields as needed
+    
+    
+    # Signals to Create Profile on User Creation
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        if instance.role == 'vendor':
+            VendorProfile.objects.create(user=instance)
+        elif instance.role == 'customer':
+            CustomerProfile.objects.create(user=instance)
+        elif instance.role == 'admin':
+            AdminProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    if instance.role == 'vendor':
+        instance.vendorprofile.save()
+    elif instance.role == 'customer':
+        instance.customerprofile.save()
+    elif instance.role == 'admin':
+        instance.adminprofile.save()

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from account.models import User
+from account.models import AdminProfile, CustomerProfile, User, VendorProfile
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
@@ -29,3 +29,33 @@ class UserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['email', 'password']
+        
+        
+# Vendor Profile Serializer
+class VendorProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VendorProfile
+        fields = ['user', 'profile_picture', 'business_type', 'business_name', 'address']
+        read_only_fields = ['user']  # 'user' will be set automatically based on the logged-in user
+
+
+# Customer Profile Serializer
+class CustomerProfileSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='user.name', read_only=True)# Remove read only to make it writable
+    email = serializers.EmailField(source='user.email', read_only=True)
+    phone = serializers.CharField(source='user.phone', read_only=True)
+    date_of_birth = serializers.DateField(source='user.date_of_birth', read_only=True)
+    
+  
+    class Meta:
+        model = CustomerProfile
+        fields = ['user', 'profile_picture', 'address', 'name', 'email', 'phone', 'date_of_birth']
+        read_only_fields = ['user']
+
+
+# Admin Profile Serializer
+class AdminProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdminProfile
+        fields = ['user', 'profile_picture', 'permissions']
+        read_only_fields = ['user']
