@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from core.models import BusinessType
 
 # Create your models here.
 
@@ -114,7 +113,7 @@ class VendorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='vendor_profiles/', blank=True, null=True)
     business_name = models.CharField(max_length=255)
-    business_type = models.ForeignKey(BusinessType, on_delete=models.CASCADE, null=True)
+    business_type = models.ForeignKey('core.BusinessType', on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

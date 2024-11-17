@@ -42,7 +42,26 @@ class CustomerProfileAdmin(admin.ModelAdmin):
     filter_horizontal = [
         
     ]
+    
+    
+class VendorProfileAdmin(admin.ModelAdmin):
+    list_display = ["id", "user", "created_at", "updated_at"]
+    search_fields = ["user__email", "user__id"]
+    ordering = ["user__email", "user__id"]
+    filter_horizontal = [
+        
+    ]
+    
+class AdminProfileAdmin(admin.ModelAdmin):
+    list_display = ["id", "user", "created_at", "updated_at"]
+    search_fields = ["user__email", "id"]
+    ordering = ["user__email", "user__id"]
+    filter_horizontal = [
+        
+    ]
 
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
-admin.site.register(CustomerProfile, CustomerProfileAdmin)
+admin.site.register(CustomerProfile, CustomerProfileAdmin),
+admin.site.register(VendorProfile, VendorProfileAdmin),
+admin.site.register(AdminProfile, AdminProfileAdmin),
