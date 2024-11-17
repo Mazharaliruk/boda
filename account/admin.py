@@ -1,5 +1,5 @@
 from django.contrib import admin
-from account.models import User
+from account.models import User, VendorProfile, CustomerProfile, AdminProfile
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 
@@ -34,5 +34,15 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = []
 
 
+# Customer Profile  Admin
+class CustomerProfileAdmin(admin.ModelAdmin):
+    list_display = ["id", "user", "created_at", "updated_at"]
+    search_fields = ["user__email", "user__id"]
+    ordering = ["user__email", "user__id"]
+    filter_horizontal = [
+        
+    ]
+
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
+admin.site.register(CustomerProfile, CustomerProfileAdmin)

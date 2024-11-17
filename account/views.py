@@ -56,26 +56,48 @@ class UserLogin(APIView):
         
     
 
-
-# User Profile View
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         user = request.user
+        profile = None
+        serializer = None
+        print(user)
+        print(user.role)
+        # Check role and retrieve profile
         if user.role == 'vendor':
-            profile = get_object_or_404(VendorProfile, user=user)
-            serializer = VendorProfileSerializer(profile)
+            try:
+                profile = get_object_or_404(VendorProfile, user=user)
+                serializer = VendorProfileSerializer(profile)
+            except VendorProfile.DoesNotExist:
+                return Response(
+                    {"message": "Vendor profile not found."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
         elif user.role == 'customer':
-            profile = get_object_or_404(CustomerProfile, user=user)
-            serializer = CustomerProfileSerializer(profile)
+            try:
+                profile = get_object_or_404(CustomerProfile, user=user)
+                serializer = CustomerProfileSerializer(profile)
+            except CustomerProfile.DoesNotExist:
+                return Response(
+                    {"message": "Customer profile not found."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
         elif user.role == 'admin':
-            profile = get_object_or_404(AdminProfile, user=user)
-            serializer = AdminProfileSerializer(profile)
+            print("Admin profile found.")
+            try:
+                profile = get_object_or_404(AdminProfile, user=user)
+                serializer = AdminProfileSerializer(profile)
+            except AdminProfile.DoesNotExist:
+                return Response(
+                    {"message": "Admin profile not found."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
         else:
             return Response(
                 {"message": "Invalid user role."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)

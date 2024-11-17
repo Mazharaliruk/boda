@@ -5,13 +5,16 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
     class Meta:
         model = User
-        fields = ['email', 'name', 'phone', 'date_of_birth', 'password', 'password2']
+        fields = ['email', 'name', 'phone', 'date_of_birth', 'password', 'password2', 'role']
         extra_kwargs = {
             'password': {'write_only': True},
         }
         
         # validate password and confirm password
     def validate(self, attrs):
+        role = attrs.get('role')  
+        if role == 'admin':
+            raise serializers.ValidationError("Cannot create a user with role 'admin' using this API.")
         password = attrs.get('password')
         password2 = attrs.get('password2')
         if password != password2:
@@ -19,6 +22,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return attrs
     
     def create(self, validated_data):
+
         return User.objects.create_user(**validated_data)
     
     
