@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import BusinessType, Business, Event
+from core.models import BusinessType, Business, Event, Service, EventService, EventMedia, Reviews, Notification, AIRecommendation
 
 # Register your models here.
 class BusinessTypeAdmin(admin.ModelAdmin):
@@ -20,7 +20,48 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ['created_at']
     
     
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description','is_active', 'created_at', 'updated_at','user', 'category')
+    search_fields = ['name',]
+    list_filter = ['created_at','is_active']
+    
+
+class EventServiceAdmin(admin.ModelAdmin):
+    list_display = ('event','service', 'vendor', 'quantity', 'price', 'currency', 'status')
+    search_fields = ['event', 'service']
+    list_filter = ['created_at', 'status']
+    
+    
+class EventMediaAdmin(admin.ModelAdmin):
+    list_display = ('event', 'media_url', 'created_at', 'updated_at','media_type')
+    search_fields = ['event', 'media_type']
+    list_filter = ['created_at','media_type']
+    
+    
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'message', 'created_at', 'updated_at','is_read')
+    search_fields = ['user', 'message']
+    list_filter = ['created_at','is_read']
+    
+    
+class ReviewsAdmin(admin.ModelAdmin):
+    list_display = ('service', 'user', 'comment', 'created_at', 'updated_at')
+    search_fields = ['service', 'user']
+    list_filter = ['created_at']
+    
+class AIRecommendationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'recommendation_data', 'created_at', 'updated_at')
+    search_fields = ['user', 'recommendation_data']
+    list_filter = ['created_at']
+    
+    
 
 admin.site.register(BusinessType, BusinessTypeAdmin)
 admin.site.register(Business, BusinessAdmin)
 admin.site.register(Event, EventAdmin)
+admin.site.register(Service, ServiceAdmin)
+admin.site.register(EventService, EventServiceAdmin)
+admin.site.register(EventMedia, EventMediaAdmin)
+admin.site.register(Reviews, ReviewsAdmin)
+admin.site.register(Notification, NotificationAdmin)
+admin.site.register(AIRecommendation, AIRecommendationAdmin)
