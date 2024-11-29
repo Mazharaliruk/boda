@@ -83,7 +83,8 @@ class Order(models.Model):
     total_amount = models.FloatField(null=True)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
     status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
-    user = models.ForeignKey('account.User', on_delete=models.CASCADE)# This is the user who made the order role is customer
+    customer_id = models.ForeignKey('account.CustomerProfile', on_delete=models.CASCADE)# This is the user who made the order role is customer
+    vendor_id = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE)
     service = models.ForeignKey('core.Service', on_delete=models.CASCADE)
     event = models.ForeignKey('core.Event', on_delete=models.CASCADE)
     order_date = models.DateTimeField(null=True)
