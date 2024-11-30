@@ -1,7 +1,31 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from core.models import BusinessType,Business, Event, Service, EventService, EventMedia, Reviews, Notification, AIRecommendation
-from core.serializer import BusinessTypeSerializer,BusinessSerializer, EventSerializer, ServiceSerializer, EventServiceSerializer, EventMediaSerializer, ReviewsSerializer, NotificationSerializer, AIRecommendationSerializer
+from core.models import (
+    BusinessType,
+    Business, 
+    Event, 
+    Service, 
+    EventService,
+    EventMedia, 
+    Reviews, 
+    Notification,
+    AIRecommendation,
+    ChatRoom,
+    Messages
+)
+from core.serializer import (
+    BusinessTypeSerializer,
+    BusinessSerializer, 
+    EventSerializer, 
+    ServiceSerializer, 
+    EventServiceSerializer, 
+    EventMediaSerializer,
+    ReviewsSerializer,
+    NotificationSerializer,
+    AIRecommendationSerializer,
+    ChatRoomSerializer,
+    MessagesSerializer
+)
 
 
 # Create your views here.
@@ -50,3 +74,12 @@ class NotificationViewSet(viewsets.ModelViewSet):
 class AIRecommendationViewSet(viewsets.ModelViewSet):
     queryset = AIRecommendation.objects.all()
     serializer_class = AIRecommendationSerializer
+    
+    
+class ChatRoomViewSet(viewsets.ModelViewSet):
+    queryset = ChatRoom.objects.all()
+    serializer_class = ChatRoomSerializer
+    
+class MessagesViewSet(viewsets.ModelViewSet):
+    queryset = Messages.objects.all()
+    serializer_class = MessagesSerializer

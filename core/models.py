@@ -49,7 +49,7 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     description = models.TextField(null=True)
-    user = models.ForeignKey('account.User', on_delete=models.CASCADE)# where role is customer
+    user = models.ForeignKey('account.CustomerProfile', on_delete=models.CASCADE)# where role is customer
     location = models.CharField(blank=True, null=True, max_length=600)
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
@@ -71,7 +71,7 @@ class Service(models.Model):
         name = models.CharField(max_length=100)
         created_at = models.DateTimeField(auto_now_add=True)
         updated_at = models.DateTimeField(auto_now=True)
-        user = models.ForeignKey('account.User', on_delete=models.CASCADE) # where role is vendor
+        user = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE) # where role is vendor
         category = models.ForeignKey('inventry.Category', on_delete=models.CASCADE)
         business = models.ForeignKey(Business, on_delete=models.CASCADE)
         description = models.TextField(null=True)
@@ -159,4 +159,54 @@ class AIRecommendation(models.Model):
     recommendation_data = models.JSONField(null=True)
     def __str__(self):
         return self.recommendation
+    
+    
+    
+    
+class RoomStatus(models.TextChoices):
+    ACTIVE = 'Active'
+    CLOSED = 'Closed'
+    ARCHIVED = 'Archived'
+    def __str__(self):
+        return self.value
+    
+class RoomType(models.TextChoices):
+    CUSTOMER = 'Customer'
+    VENDOR = 'Vendor'
+    ADMIN = 'Admin'
+    def __str__(self):
+        return self.value
+class ChatRoom(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    user_id1 = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE)
+    user_id2 = models.ForeignKey('account.CustomerProfile', on_delete=models.CASCADE)
+    admin_id = models.ForeignKey('account.AdminProfile', on_delete=models.CASCADE)
+    room_status = models.CharField(max_length=50,choices= RoomStatus.choices, default=RoomStatus.ACTIVE)
+    room_type = models.CharField(max_length=50,choices= RoomType.choices, default=RoomType.CUSTOMER)
+    def __str__(self):
+        return self.user_id1
+    
+    
+    
+class MessageType(models.TextChoices):
+    TEXT = 'Text'
+    IMAGE = 'Image'
+    VIDEO = 'Video'
+    AUDIO = 'Audio',
+    FILE = 'File'
+    def __str__(self):
+        return self.value
+class Messages(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    #The ID of the sender (could be customer, vendor, or admin).
+    sender_id = models.ForeignKey('account.User', on_delete=models.CASCADE)
+    message_content = models.TextField(null=True)
+    message_type = models.CharField(max_length=50,choices= MessageType.choices, default=MessageType.TEXT)
+    sent_at = models.DateTimeField(null=True)
+    read_at = models.DateTimeField(null=True)
+    def __str__(self):
+        return self.message
         

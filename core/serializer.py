@@ -1,5 +1,17 @@
 from rest_framework import serializers
-from core.models import BusinessType, Business, Event, Service, EventService, EventMedia, Reviews, Notification, AIRecommendation
+from core.models import (
+    BusinessType,
+    Business,
+    Event,
+    Service, 
+    EventService,
+    EventMedia,
+    Reviews,
+    Notification, 
+    AIRecommendation,
+    ChatRoom,
+    Messages
+    )
 
 
 class BusinessTypeSerializer(serializers.ModelSerializer):
@@ -52,4 +64,15 @@ class NotificationSerializer(serializers.ModelSerializer):
 class AIRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = AIRecommendation
+        fields = '__all__'
+        
+        
+class ChatRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatRoom
+        fields = '__all__'
+        
+class MessagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Messages
         fields = '__all__'

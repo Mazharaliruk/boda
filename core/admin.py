@@ -1,5 +1,17 @@
 from django.contrib import admin
-from core.models import BusinessType, Business, Event, Service, EventService, EventMedia, Reviews, Notification, AIRecommendation
+from core.models import (
+     BusinessType, 
+     Business, 
+     Event, 
+     Service, 
+     EventService, 
+     EventMedia, 
+     Reviews,
+     Notification, 
+     AIRecommendation,
+     ChatRoom,
+     Messages
+)
 
 # Register your models here.
 class BusinessTypeAdmin(admin.ModelAdmin):
@@ -55,6 +67,18 @@ class AIRecommendationAdmin(admin.ModelAdmin):
     list_filter = ['created_at']
     
     
+class ChatRoomAdmin(admin.ModelAdmin):
+    list_display = ('user_id1', 'user_id2', 'created_at', 'updated_at', 'room_status', 'room_type')
+    list_filter = ['created_at', 'room_status', 'room_type']
+    
+    
+    
+    
+class MessagesAdmin(admin.ModelAdmin):
+    list_display = ('room', 'sender_id', 'message_content', 'message_type', 'sent_at', 'read_at')
+    list_filter = ['message_type',]
+    
+    
 
 admin.site.register(BusinessType, BusinessTypeAdmin)
 admin.site.register(Business, BusinessAdmin)
@@ -65,3 +89,5 @@ admin.site.register(EventMedia, EventMediaAdmin)
 admin.site.register(Reviews, ReviewsAdmin)
 admin.site.register(Notification, NotificationAdmin)
 admin.site.register(AIRecommendation, AIRecommendationAdmin)
+admin.site.register(ChatRoom, ChatRoomAdmin)
+admin.site.register(Messages, MessagesAdmin)
