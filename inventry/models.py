@@ -8,10 +8,8 @@ class Category(models.Model):
     image_url = models.URLField(null=True)
     is_acgtive = models.BooleanField(default=True)
     slug = models.SlugField(null=True)
-    
-    
-def __str__(self):
-    return self.name
+    def __str__(self):
+        return self.name
 
 
 class SubCategory(models.Model):

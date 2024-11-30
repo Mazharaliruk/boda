@@ -119,6 +119,7 @@ class VendorProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class CustomerProfile(models.Model):
+    
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='customer_profiles/', blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)  # Add more fields as needed

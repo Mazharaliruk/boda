@@ -11,7 +11,7 @@ class CategoryAdmin(admin.ModelAdmin):
     
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'name', 'description', 'image_url', 'is_active', 'slug', 'created_at', 'updated_at'
+        'id', 'name', 'description', 'image_url', 'is_active', 'slug', 'created_at', 'updated_at', 'category'
     ]
     search_fields = ['name', 'slug']
     list_filter = ['is_active', 'created_at']
