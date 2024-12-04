@@ -33,12 +33,12 @@ class Promotion(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     vendor_id = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE) # where role is vendor
-    description = models.TextField(null=True)
-    image_url = models.URLField(null=True)
+    description = models.TextField(null=True, blank= True)
+    image_url = models.URLField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    discount_percent= models.FloatField(null=True)
-    start_date = models.DateTimeField(null=True)
-    end_date = models.DateTimeField(null=True)
+    discount_percent= models.FloatField(null=True, blank=True)
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
     
     
     def __str__(self):
