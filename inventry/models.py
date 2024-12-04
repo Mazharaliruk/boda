@@ -4,10 +4,10 @@ class Category(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    description = models.TextField(null=True)
-    image_url = models.URLField(null=True)
+    description = models.TextField(null=True, blank=True)
+    image_url = models.URLField(null=True, blank=True)
     is_acgtive = models.BooleanField(default=True)
-    slug = models.SlugField(null=True)
+    slug = models.SlugField(null=True, blank=True)
     
     
 def __str__(self):
