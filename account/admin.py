@@ -36,7 +36,7 @@ class UserAdmin(BaseUserAdmin):
 
 # Customer Profile  Admin
 class CustomerProfileAdmin(admin.ModelAdmin):
-    list_display = ["id", "user", "created_at", "updated_at"]
+    list_display = ["id","user_id", "user", "created_at", "updated_at"]
     search_fields = ["user__email", "user__id"]
     ordering = ["user__email", "user__id"]
     filter_horizontal = [
