@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
+from account.permissions import IsAdmin, IsCustomerOrReadOnly, IsVendor
 from core.models import (
     BusinessType,
     Business, 
@@ -31,11 +32,15 @@ from core.serializer import (
 
 # Create your views here.
 
+
+
+
+
+
 class BusinessTypeViewSet(viewsets.ModelViewSet):
     queryset = BusinessType.objects.all()
     serializer_class = BusinessTypeSerializer
-    permission_classes = [IsAuthenticated]  # Restrict access to authenticated users
-    
+    permission_classes = [IsAuthenticated, IsAdmin]  # Only admins can perform any actions
 
 class BusinessViewSet(viewsets.ModelViewSet):
     queryset = Business.objects.all()
@@ -51,6 +56,20 @@ class EventViewSet(viewsets.ModelViewSet):
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'vendor':
+            return self.queryset.filter(user=user)  # Vendors can only access their services
+        elif user.role == 'customer':
+            return self.queryset.filter(is_active=True)  # Customers see only active services
+        return self.queryset  # Admins see everything
+
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAuthenticated(), IsVendor() | IsAdmin()]  # Vendors and Admins can modify
+        return [IsAuthenticated(), IsCustomerOrReadOnly()]  # Customers can only view
+
     
     
     
