@@ -18,11 +18,11 @@ class BusinessType(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    description = models.TextField(null=True)
-    image_url = models.URLField(null=True)
+    description = models.TextField(null=True, blank=True)
+    image_url = models.ImageField(upload_to='business_types/',null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    slug = models.SlugField(null=True)
-    icon_url = models.URLField(null=True)
+    slug = models.SlugField(null=True, blank=True)
+    icon_url = models.ImageField(upload_to='business_types/',null=True, blank=True)
     
 
     def __str__(self):
@@ -33,12 +33,12 @@ class Business(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    description = models.TextField(null=True)
-    image_url = models.URLField(null=True)
+    description = models.TextField(null=True, blank= True)
+    image_url = models.ImageField(upload_to='business/',null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    slug = models.SlugField(null=True)
+    slug = models.SlugField(null=True, blank=True)
     business_type = models.ForeignKey(BusinessType, on_delete=models.CASCADE)
-    icon_url = models.URLField(null=True)
+    icon_url = models.ImageField(upload_to='business/',null=True, blank=True)
     
     def __str__(self):
         return self.name
@@ -116,13 +116,13 @@ class MediaType(models.TextChoices):
 class EventMedia(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    media_url = models.URLField(null=True)
-    media_type = models.CharField(max_length=50,choices= MediaType.choices, default=MediaType.IMAGE)
-    uploaded_at = models.DateTimeField(null=True)
-    
+    event = models.ForeignKey('Event', on_delete=models.CASCADE)
+    media_file = models.FileField(upload_to='event_media/', null=True, blank=True)  # Stores both images and videos
+    media_type = models.CharField(max_length=50, choices=MediaType.choices, default=MediaType.IMAGE)
+    uploaded_at = models.DateTimeField(null=True, blank=True)
+
     def __str__(self):
-        return self.media_url
+        return str(self.media_file.url) if self.media_file else "No media"
     
     
     

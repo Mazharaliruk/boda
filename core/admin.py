@@ -45,7 +45,7 @@ class EventServiceAdmin(admin.ModelAdmin):
     
     
 class EventMediaAdmin(admin.ModelAdmin):
-    list_display = ('event', 'media_url', 'created_at', 'updated_at','media_type')
+    list_display = ('event', 'media_file', 'created_at', 'updated_at','media_type')
     search_fields = ['event', 'media_type']
     list_filter = ['created_at','media_type']
     
