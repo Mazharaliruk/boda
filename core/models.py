@@ -1,5 +1,6 @@
 from django.db import models
 from sales.models import Currency
+from rest_framework.permissions import IsAuthenticated
 
 # Create your models here.
 

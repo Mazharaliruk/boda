@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 from core.models import (
     BusinessType,
     Business, 
@@ -33,11 +34,13 @@ from core.serializer import (
 class BusinessTypeViewSet(viewsets.ModelViewSet):
     queryset = BusinessType.objects.all()
     serializer_class = BusinessTypeSerializer
+    permission_classes = [IsAuthenticated]  # Restrict access to authenticated users
     
 
 class BusinessViewSet(viewsets.ModelViewSet):
     queryset = Business.objects.all()
     serializer_class = BusinessSerializer
+    permission_classes = [IsAuthenticated]  # Restrict access to authenticated users
     
     
 class EventViewSet(viewsets.ModelViewSet):
