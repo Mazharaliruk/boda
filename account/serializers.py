@@ -32,7 +32,7 @@ class UserLoginSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=255)
     class Meta:
         model = User
-        fields = ['email', 'password']
+        fields = ['email', 'password', 'role']
         
         
 # Vendor Profile Serializer
@@ -49,11 +49,16 @@ class CustomerProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email', read_only=True)
     phone = serializers.CharField(source='user.phone', read_only=True)
     date_of_birth = serializers.DateField(source='user.date_of_birth', read_only=True)
+    role = serializers.CharField(source='user.role', read_only=True)
+    last_login = serializers.DateTimeField(source='user.last_login', read_only=True)
+    is_active = serializers.BooleanField(source='user.is_active', read_only=True)
+    created_at = serializers.DateTimeField(source='user.created_at', read_only=True)
+    updated_at = serializers.DateTimeField(source='user.updated_at', read_only=True)
     
   
     class Meta:
         model = CustomerProfile
-        fields = ['user', 'profile_picture', 'address', 'name', 'email', 'phone', 'date_of_birth']
+        fields = ['user', 'profile_picture', 'address', 'name', 'email', 'phone', 'date_of_birth', 'role', 'last_login', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['user']
 
 

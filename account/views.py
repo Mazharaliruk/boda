@@ -39,19 +39,36 @@ class UserRegistration(APIView):
             return Response(status=status.HTTP_200_OK, data={"token":token,"message": "Registration successfully"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-# user login view
+    
+    
 class UserLogin(APIView):
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid(raise_exception= True):
+        if serializer.is_valid(raise_exception=True):
             email = serializer.data.get("email")
             password = serializer.data.get("password")
+            role = serializer.data.get("role")
+
+            # Authenticate user
             user = authenticate(email=email, password=password)
             if user is not None:
-                token = get_tokens_for_user(user)
-                return Response(status=status.HTTP_200_OK, data={"token":token,"message": "Login successfully"})
+                # Check if the user's role matches the provided role
+                if hasattr(user, "role") and user.role == role:
+                    token = get_tokens_for_user(user)
+                    return Response(
+                        status=status.HTTP_200_OK,
+                        data={"token": token, "message": "Login successfully"}
+                    )
+                else:
+                    return Response(
+                        status=status.HTTP_403_FORBIDDEN,
+                        data={"message": "Invalid role for this user"}
+                    )
             else:
-                return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Invalid credentials email or password"})
+                return Response(
+                    status=status.HTTP_404_NOT_FOUND,
+                    data={"message": "Invalid credentials: email or password"}
+                )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     
