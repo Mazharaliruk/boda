@@ -117,7 +117,7 @@ class MediaType(models.TextChoices):
 class EventMedia(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    event_service = models.ForeignKey(EventService, on_delete=models.CASCADE)
+    event_service = models.ForeignKey(EventService, on_delete=models.CASCADE,null=True, blank=True)
     media_file = models.FileField(upload_to='event_media/', null=True, blank=True)  # Stores both images and videos
     media_type = models.CharField(max_length=50, choices=MediaType.choices, default=MediaType.IMAGE)
     uploaded_at = models.DateTimeField(null=True, blank=True)
