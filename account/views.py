@@ -1,3 +1,4 @@
+from tokenize import TokenError
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -78,12 +79,16 @@ class UserLogout(APIView):
 
     def post(self, request, format=None):
         try:
-            # Blacklist the user's refresh token
             refresh_token = request.data.get("refresh_token")
-            print(refresh_token)
+            if not refresh_token:
+                return Response({"message": "Refresh token is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Blacklist the refresh token
             token = RefreshToken(refresh_token)
             token.blacklist()
             return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
+        except TokenError as e:
+            return Response({"message": "Invalid or expired token", "error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
             return Response({"message": "Logout failed", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
