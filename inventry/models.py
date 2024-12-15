@@ -30,10 +30,10 @@ class SubCategory(models.Model):
     
     
 class Promotion(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null= True, blank= True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    vendor_id = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE)  # where role is vendor
+    vendor_id = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE, null=True, blank= True)  # where role is vendor
     description = models.TextField(null=True, blank=True)
     image_url = models.ImageField(upload_to='promotions/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
