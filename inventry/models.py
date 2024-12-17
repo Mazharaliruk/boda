@@ -54,11 +54,11 @@ class Discount(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    vendor_id = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE) # where role is vendor
-    service = models.ForeignKey('core.Service', on_delete=models.CASCADE)
-    promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE)
+    vendor_id = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE, null=True, blank= True) # where role is vendor
+    service = models.ForeignKey('core.Service', on_delete=models.CASCADE, null=True, blank= True)
+    promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE, null=True, blank= True)
     description = models.TextField(null=True, blank= True)
-    image_url = models.ImageField(upload_to='discount/',null=True, blank=True)
+    image_url = models.ImageField(upload_to='discount/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
     discount_percent= models.FloatField(null=True, blank=True)
     start_date = models.DateTimeField(null=True, blank=True)
