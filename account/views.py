@@ -8,8 +8,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from account.models import(
     AdminProfile, 
-    CustomerProfile, 
+    CustomerProfile,
+    User, 
     VendorProfile)
+from account.permissions import IsAdmin
 from account.serializers import(
     AdminProfileSerializer,
     CustomerProfileSerializer,
@@ -136,4 +138,24 @@ class UserProfile(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+# fetch all users 
+class UserList(APIView):
+    permission_classes = [IsAdmin]
+
+    def get(self, request, format=None):
+        customers = CustomerProfile.objects.filter(user__role='customer')
+        serializer = CustomerProfileSerializer(customers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+#fetch all vendors
+class VendorList(APIView):
+    permission_classes = [IsAdmin]
+
+    def get(self, request, format=None):
+        vendors = VendorProfile.objects.filter(user__role='vendor')
+        serializer = VendorProfileSerializer(vendors, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

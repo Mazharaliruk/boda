@@ -112,7 +112,7 @@ class User(AbstractBaseUser):
 class VendorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='vendor_profiles/', blank=True, null=True)
-    business_name = models.CharField(max_length=255)
+    business_name = models.CharField(max_length=255, blank=True, null=True)
     business_type = models.ForeignKey('core.BusinessType', on_delete=models.CASCADE, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -122,7 +122,7 @@ class CustomerProfile(models.Model):
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='customer_profiles/', blank=True, null=True)
-    address = models.CharField(max_length=255, blank=True, null=True)  # Add more fields as needed
+    address = models.CharField(max_length=255, blank=True, null=True)  # Add more fields as neededs
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
