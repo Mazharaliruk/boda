@@ -68,8 +68,8 @@ class PaymentGetway(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     base_url = models.URLField(null=True)
     status = models.BooleanField(default=False)
-    transaction_fee = models.FloatField(null=True)
-    additional_config = models.TextField(null=True)
+    transaction_fee = models.FloatField(null=True, blank=True)
+    additional_config = models.TextField(null=True, blank=True)
     supported_currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
     def __str__(self):
         return self.name
@@ -80,19 +80,19 @@ class PaymentGetway(models.Model):
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    total_amount = models.FloatField(null=True)
+    total_amount = models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
     status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
     customer_id = models.ForeignKey('account.CustomerProfile', on_delete=models.CASCADE)# This is the user who made the order role is customer
     vendor_id = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE)
     service = models.ForeignKey('core.Service', on_delete=models.CASCADE)
     event = models.ForeignKey('core.Event', on_delete=models.CASCADE)
-    order_date = models.DateTimeField(null=True)
-    shipping_address = models.TextField(null=True)
-    billing_address = models.TextField(null=True)
-    discount_amount = models.FloatField(null=True)
-    tax_amount = models.FloatField(null=True)
-    note = models.TextField(null=True)
+    order_date = models.DateTimeField(null=True, blank=True)
+    shipping_address = models.TextField(null=True, blank=True)
+    billing_address = models.TextField(null=True, blank=True)
+    discount_amount = models.FloatField(null=True, blank=True)
+    tax_amount = models.FloatField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
     def __str__(self):
         return self.status
     
@@ -101,15 +101,15 @@ class Order(models.Model):
 class Transaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    amount = models.FloatField(null=True)
+    amount = models.FloatField(null=True, blank=True)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
     status = models.CharField(max_length=20, choices=TransactionStatus.choices, default=TransactionStatus.SUCCESS)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment_getway = models.ForeignKey(PaymentGetway, on_delete=models.CASCADE)
-    transcation_date = models.DateTimeField(null=True)
-    getway_response = models.JSONField(null=True)
+    transcation_date = models.DateTimeField(null=True, blank=True)
+    getway_response = models.JSONField(null=True, blank=True)
     paymment_method = models.CharField(max_length=100, choices=PaymentMethod.choices, default=PaymentMethod.CREDIT_CARD)
-    retry_count = models.IntegerField(null=True)
+    retry_count = models.IntegerField(null=True, blank=True)
     def __str__(self):
         return self.status
     
@@ -118,17 +118,17 @@ class Transaction(models.Model):
 class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    amount = models.FloatField(null=True)
-    payment_date = models.DateTimeField(null=True)
+    amount = models.FloatField(null=True, blank=True)
+    payment_date = models.DateTimeField(null=True, blank=True)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
     status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment_getway = models.ForeignKey(PaymentGetway, on_delete=models.CASCADE)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     paymment_method = models.CharField(max_length=100,choices=PaymentMethod.choices, default=PaymentMethod.CREDIT_CARD)
-    transaction_refrence = models.CharField(max_length=200,null=True)
-    refund_amount = models.FloatField(null=True)
-    getway_response = models.JSONField(null=True)
+    transaction_refrence = models.CharField(max_length=200,null=True, blank=True)
+    refund_amount = models.FloatField(null=True, blank=True)
+    getway_response = models.JSONField(null=True, blank=True)
     
     def __str__(self):
         return self.status
