@@ -110,6 +110,7 @@ class User(AbstractBaseUser):
 
 # Profile Models
 class VendorProfile(models.Model):
+    id = models.BigAutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='vendor_profiles/', blank=True, null=True)
     business_name = models.CharField(max_length=255, blank=True, null=True)
@@ -119,7 +120,7 @@ class VendorProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class CustomerProfile(models.Model):
-    
+    id = models.BigAutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='customer_profiles/', blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)  # Add more fields as neededs
@@ -127,6 +128,7 @@ class CustomerProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class AdminProfile(models.Model):
+    id = models.BigAutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='admin_profiles/', blank=True, null=True)
     permissions = models.TextField(blank=True)  # Add fields as needed

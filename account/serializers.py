@@ -48,7 +48,7 @@ class VendorProfileSerializer(serializers.ModelSerializer):
     updated_at = serializers.DateTimeField(source='user.updated_at', read_only=True)
     class Meta:
         model = VendorProfile
-        fields = ['user', 'profile_picture', 'business_type', 'business_name', 'address', 'name', 'email', 'phone', 'date_of_birth', 'role', 'last_login', 'is_active', 'created_at', 'updated_at']
+        fields = ['id','user', 'profile_picture', 'business_type', 'business_name', 'address', 'name', 'email', 'phone', 'date_of_birth', 'role', 'last_login', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['user']  # 'user' will be set automatically based on the logged-in user
 
 
@@ -67,7 +67,7 @@ class CustomerProfileSerializer(serializers.ModelSerializer):
   
     class Meta:
         model = CustomerProfile
-        fields = ['user', 'profile_picture', 'address', 'name', 'email', 'phone', 'date_of_birth', 'role', 'last_login', 'is_active', 'created_at', 'updated_at']
+        fields = ['id','user', 'profile_picture', 'address', 'name', 'email', 'phone', 'date_of_birth', 'role', 'last_login', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['user']
 
 
@@ -86,5 +86,5 @@ class AdminProfileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = AdminProfile
-        fields = ['user', 'profile_picture', 'permissions', 'name', 'email', 'phone', 'date_of_birth', 'role', 'last_login', 'is_active', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'profile_picture', 'permissions', 'name', 'email', 'phone', 'date_of_birth', 'role', 'last_login', 'is_active', 'created_at', 'updated_at']
         read_only_fields = ['user']
