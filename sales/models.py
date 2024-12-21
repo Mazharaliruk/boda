@@ -4,18 +4,18 @@ from django.db import models
 
 # Here are the choices for the order status
 class OrderStatus(models.TextChoices):
-    PENDING = 'P', 'Pending'
-    COMPLETED = 'C', 'Completed'
-    CANCELLED = 'X', 'Cancelled'
-    REFUNDED = 'R', 'Refunded'
+    PENDING = 'PENDING', 'PENDING'
+    COMPLETED = 'COMPLETED', 'COMPLETED'
+    CANCELLED = 'CANCELLED', 'CANCELLED'
+    REFUNDED = 'REFUNDED', 'REFUNDED'
     def __str__(self):
         return self.value
     
     
 class TransactionStatus(models.TextChoices):
-    SUCCESS = 'Success'
-    FAILED = 'Failed'
-    REFUNDED = 'Refunded'
+    SUCCESS = 'SUCCESS'
+    FAILED = 'FAILED'
+    REFUNDED = 'REFUNDED'
     def __str__(self):
         return self.value
     
@@ -50,10 +50,10 @@ class Currency(models.TextChoices):
     
 # Payment Method Choices
 class PaymentMethod(models.TextChoices):
-    CREDIT_CARD = 'CC', 'Credit Card'
-    DEBIT_CARD = 'DC', 'Debit Card'
-    BANK_TRANSFER = 'BT', 'Bank Transfer'
-    CASH_ON_DELIVERY = 'COD', 'Cash On Delivery'
+    CREDIT_CARD = 'CREDIT_CARD', 'Credit Card'
+    DEBIT_CARD = 'DEBIT_CARD', 'Debit Card'
+    BANK_TRANSFER = 'BANK_TRANSFER', 'Bank Transfer'
+    CASH_ON_DELIVERY = 'CASH_ON_DELIVERY', 'Cash On Delivery'
     def __str__(self):
         return self.value
 
