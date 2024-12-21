@@ -118,6 +118,8 @@ class VendorProfile(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return str(self.id)
 
 class CustomerProfile(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -126,6 +128,8 @@ class CustomerProfile(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True)  # Add more fields as neededs
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return str(self.id)
 
 class AdminProfile(models.Model):
     id = models.BigAutoField(primary_key=True)
