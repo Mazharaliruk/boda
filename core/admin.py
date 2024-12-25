@@ -33,7 +33,7 @@ class EventAdmin(admin.ModelAdmin):
     
     
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description','is_active', 'created_at', 'updated_at','user', 'category')
+    list_display = ('name', 'description','is_active', 'created_at', 'updated_at','vendor', 'category')
     search_fields = ['name',]
     list_filter = ['created_at','is_active']
     

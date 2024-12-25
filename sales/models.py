@@ -12,6 +12,13 @@ class OrderStatus(models.TextChoices):
     REFUNDED = 'REFUNDED', 'REFUNDED'
     def __str__(self):
         return self.value
+
+class PaymentStatus(models.TextChoices):
+    PAID = 'PAID', 'PAID'
+    UNPAID = 'UNPAID', 'UNPAID'
+ 
+    def __str__(self):
+        return self.value
     
     
 class TransactionStatus(models.TextChoices):
@@ -109,7 +116,7 @@ class Order(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Order {self.order_id} - {self.status}"
+        return f"order_id:{self.order_id} , status:{self.status} , id:{self.id}"
     
 
 # Transaction Model 
@@ -143,7 +150,7 @@ class Payment(models.Model):
     amount = models.FloatField(null=True, blank=True, default=0.0)
     payment_date = models.DateTimeField(null=True, blank=True)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
-    status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
+    status = models.CharField(max_length=20, choices=PaymentStatus.choices, default=PaymentStatus.UNPAID)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment_getway = models.ForeignKey(PaymentGetway, on_delete=models.CASCADE)
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)

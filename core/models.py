@@ -49,20 +49,20 @@ class Event(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    description = models.TextField(null=True)
-    user = models.ForeignKey('account.CustomerProfile', on_delete=models.CASCADE)# where role is customer
+    description = models.TextField(null=True, blank= True)
+    user = models.ForeignKey('account.CustomerProfile', on_delete=models.CASCADE, null=True, blank=True)# where role is customer
     location = models.CharField(blank=True, null=True, max_length=600)
-    start_date = models.DateTimeField(null=True)
-    end_date = models.DateTimeField(null=True)
-    price = models.FloatField(null=True)
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
+    price = models.FloatField(default=0.0)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR),
-    image_url = models.URLField(null=True)
-    guest_count = models.IntegerField(null=True)
-    budget = models.FloatField(null=True)
+    image_url = models.URLField(null=True, blank=True)
+    guest_count = models.IntegerField(default=0)
+    budget = models.FloatField(default=0.0)
     status = models.CharField(max_length=50,choices= Status.choices, default=Status.DRAFT)
     maximum_capacity = models.IntegerField(null=True)
     minimum_capacity = models.IntegerField(null=True)
-    business = models.ForeignKey(Business, on_delete=models.CASCADE)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.name
     
@@ -72,12 +72,12 @@ class Service(models.Model):
         name = models.CharField(max_length=100)
         created_at = models.DateTimeField(auto_now_add=True)
         updated_at = models.DateTimeField(auto_now=True)
-        user = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE) # where role is vendor
+        vendor = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE) # where role is vendor
         category = models.ForeignKey('inventry.Category', on_delete=models.CASCADE)
         business = models.ForeignKey(Business, on_delete=models.CASCADE)
         description = models.TextField(null=True, blank= True)
         is_active = models.BooleanField(default=True, blank=True)
-        price = models.FloatField(null=True, blank= True)
+        price = models.FloatField(default=0.0)
         currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
         
         
@@ -99,7 +99,7 @@ class EventService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     vendor = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE)
     quantity = models.IntegerField(null=True, blank=True)
-    price = models.FloatField(null=True, blank=True)
+    price = models.FloatField(default=0.0)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
     status = models.CharField(max_length=50,choices= EventServiceStatus.choices, default=EventServiceStatus.PENDING)
     
