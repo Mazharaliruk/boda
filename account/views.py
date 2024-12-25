@@ -150,6 +150,53 @@ class UserList(APIView):
         serializer = CustomerProfileSerializer(customers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    
+
+# fetch customer by id
+class CustomerById(APIView):
+    permission_classes = [IsAdmin]
+
+    # Fetch customer by ID
+    def get(self, request, pk, format=None):
+        customer = get_object_or_404(CustomerProfile, pk=pk)
+        serializer = CustomerProfileSerializer(customer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Update customer by ID
+    # Update customer by ID
+    def put(self, request, pk, format=None):
+        customer = get_object_or_404(CustomerProfile, pk=pk)
+        serializer = CustomerProfileSerializer(customer, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+
+            # Update CustomerProfile fields
+            customer.profile_picture = validated_data.get('profile_picture', customer.profile_picture)
+            customer.address = validated_data.get('address', customer.address)
+            customer.save()
+
+            # Update related User fields
+            user_data = validated_data.get('user', {})
+            user = customer.user
+            user.name = user_data.get('name', user.name)
+            # user.email = user_data.get('email', user.email)
+            # user.phone = user_data.get('phone', user.phone)
+            # user.date_of_birth = user_data.get('date_of_birth', user.date_of_birth)
+            user.save()
+
+            return Response(
+                {"message": "Customer updated successfully", "data": serializer.data},
+                status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Delete customer by ID
+    def delete(self, request, pk, format=None):
+        customer = get_object_or_404(CustomerProfile, pk=pk)
+        customer.delete()
+        return Response({"message": "Customer deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
 
 #fetch all vendors
 class VendorList(APIView):

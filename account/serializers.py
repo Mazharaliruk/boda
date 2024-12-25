@@ -54,7 +54,7 @@ class VendorProfileSerializer(serializers.ModelSerializer):
 
 # Customer Profile Serializer
 class CustomerProfileSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='user.name', read_only=True)# Remove read only to make it writable
+    name = serializers.CharField(source='user.name',)# Remove read only to make it writable
     email = serializers.EmailField(source='user.email', read_only=True)
     phone = serializers.CharField(source='user.phone', read_only=True)
     date_of_birth = serializers.DateField(source='user.date_of_birth', read_only=True)
