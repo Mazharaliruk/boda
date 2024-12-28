@@ -27,7 +27,11 @@ class BusinessAdmin(admin.ModelAdmin):
     
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'image_url',  'business')
+    list_display = ('name',  'created_at', 'updated_at','description', 
+                    'image_url',  'business', 'user', 'location', 
+                    'start_date', 'end_date', 'price', 'currency',
+                    'guest_count', 'budget', 'status',
+                    'maximum_capacity', 'minimum_capacity')
     search_fields = ['name', 'slug']
     list_filter = ['created_at']
     
