@@ -4,7 +4,7 @@ from inventry.models import Category, SubCategory, Promotion, Discount, Tax
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'name', 'description', 'image_url', 'is_active', 'slug', 'created_at', 'updated_at'
+        'id', 'name', 'description', 'image_url', 'is_active', 'slug', 'created_at', 'updated_at', 'service'
     ]
     search_fields = ['name', 'slug']
     list_filter = ['is_active', 'created_at']

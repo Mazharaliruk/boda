@@ -75,7 +75,6 @@ class Service(models.Model):
         created_at = models.DateTimeField(auto_now_add=True)
         updated_at = models.DateTimeField(auto_now=True)
         vendor = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE) # where role is vendor
-        category = models.ForeignKey('inventry.Category', on_delete=models.CASCADE)
         business = models.ForeignKey(Business, on_delete=models.CASCADE)
         description = models.TextField(null=True, blank= True)
         is_active = models.BooleanField(default=True, blank=True)
@@ -134,14 +133,14 @@ class Reviews(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey('account.User', on_delete=models.CASCADE)
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True),
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True, blank=True),
-    vendor = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE, null=True, blank=True),
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True)
+    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
+    vendor = models.ForeignKey('account.VendorProfile', on_delete=models.CASCADE, null=True, blank=True)
     rating = models.FloatField(default=0)
     comment = models.TextField(null=True, blank=True)
     
     def __str__(self):
-        return self.rating
+        return f"{self.service} - {self.rating}"
     
 
 # Notification Table

@@ -37,7 +37,7 @@ class EventAdmin(admin.ModelAdmin):
     
     
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description','is_active', 'created_at', 'updated_at','vendor', 'category')
+    list_display = ('name', 'description','is_active', 'created_at', 'updated_at','vendor')
     search_fields = ['name',]
     list_filter = ['created_at','is_active']
     
@@ -61,12 +61,13 @@ class NotificationAdmin(admin.ModelAdmin):
     
     
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ('service', 'user', 'comment', 'created_at', 'updated_at')
-    search_fields = ['service', 'user']
+    list_display = (
+        'id', 'service', 'user', 'comment', 'created_at', 'updated_at','rating', 'vendor', 'event')
+    search_fields = ['service', 'user'] 
     list_filter = ['created_at']
     
 class AIRecommendationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'recommendation_data', 'created_at', 'updated_at')
+    list_display = ('user', 'recommendation_data', 'created_at', 'updated_at',)
     search_fields = ['user', 'recommendation_data']
     list_filter = ['created_at']
     

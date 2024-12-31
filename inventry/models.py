@@ -7,6 +7,7 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     description = models.TextField(null=True, blank=True)
+    service = models.ForeignKey('core.Service', on_delete=models.CASCADE, null= True, blank= True)
     image_url = models.ImageField(upload_to='categories/',null=True, blank=True)
     is_active = models.BooleanField(default=True)
     slug = models.SlugField(null=True, blank=True)
@@ -68,6 +69,8 @@ class Discount(models.Model):
         return self.name
     
     
+
+    
 class Tax(models.Model):
     name = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -77,6 +80,7 @@ class Tax(models.Model):
     tax_percent= models.FloatField(null=True, blank= True)
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
+    description = models.TextField(null=True, blank= True)
     
     def __str__(self):
         return self.name

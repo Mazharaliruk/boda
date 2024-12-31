@@ -149,8 +149,17 @@ class UserList(APIView):
         customers = CustomerProfile.objects.filter(user__role='customer')
         serializer = CustomerProfileSerializer(customers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
     
-    
+class CustomerByUser(APIView):
+    permission_classes = [IsAdmin]  # Adjust permissions based on your requirements
+
+    # Fetch customer by the related user ID
+    def get(self, request, user, format=None):
+        customer = get_object_or_404(CustomerProfile, user=user)
+        serializer = CustomerProfileSerializer(customer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 # fetch customer by id
 class CustomerById(APIView):
