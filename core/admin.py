@@ -27,7 +27,7 @@ class BusinessAdmin(admin.ModelAdmin):
     
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('name',  'created_at', 'updated_at','description', 
+    list_display = ('id','name',  'created_at', 'updated_at','description', 
                     'image_url',  'business', 'user', 'location', 
                     'start_date', 'end_date', 'price', 'currency',
                     'guest_count', 'budget', 'status',

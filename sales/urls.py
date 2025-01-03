@@ -10,4 +10,6 @@ router.register(r'paymentgetways', PaymentGetwayViewSet, basename='paymentgetway
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('by-event/', OrderViewSet.as_view({'get': 'get_orders_by_event'}), name='orders-by-event'),
+    path('by-event-status/', OrderViewSet.as_view({'get': 'get_orders_by_event_status'}), name='orders-by-event-status'),
 ]

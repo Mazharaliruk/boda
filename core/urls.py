@@ -29,4 +29,5 @@ router.register(r'messages', MessagesViewSet, basename='messages'),
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('by-event/', ReviewsViewSet.as_view({'get': 'get_reviews_by_event'}), name='reviews-by-event'),
 ]

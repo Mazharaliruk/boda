@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from account.permissions import IsAdmin, IsCustomerOrReadOnly, IsVendor
 from core.models import (
@@ -87,6 +89,15 @@ class EventMediaViewSet(viewsets.ModelViewSet):
 class ReviewsViewSet(viewsets.ModelViewSet):
     queryset = Reviews.objects.all()
     serializer_class = ReviewsSerializer
+    
+    @action(detail=False, methods=['get'], url_path='by-event')
+    def get_reviews_by_event(self, request):
+        event = request.query_params.get('event')
+        if not event:
+            return Response({'error': 'event query parameter is required.'}, status=400)
+        reviews = Reviews.objects.filter(event=event)
+        serializer = self.get_serializer(reviews, many=True)
+        return Response(serializer.data)
     
     
 class NotificationViewSet(viewsets.ModelViewSet):

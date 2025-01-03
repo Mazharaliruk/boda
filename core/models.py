@@ -58,7 +58,7 @@ class Event(models.Model):
     end_date = models.DateTimeField(null=True, blank=True)
     price = models.FloatField(default=0.0)
     currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
-    image_url = models.URLField(null=True, blank=True)
+    image_url = models.ImageField(upload_to='event/',null=True, blank=True)
     guest_count = models.IntegerField(default=0)
     budget = models.FloatField(default=0.0)
     status = models.CharField(max_length=50,choices= Status.choices, default=Status.DRAFT)
