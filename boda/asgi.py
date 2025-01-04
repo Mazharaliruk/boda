@@ -8,9 +8,19 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
 """
 
 import os
-
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+from django.urls import path
 from django.core.asgi import get_asgi_application
+from inventry.consumers import CategoryConsumer
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'boda.settings')
 
-application = get_asgi_application()
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    "websocket": AuthMiddlewareStack(
+        URLRouter([
+            path('ws/categories/', CategoryConsumer.as_asgi()),
+        ])
+    ),
+})
