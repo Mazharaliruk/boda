@@ -34,12 +34,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'daphne',
+    'channels',
     'corsheaders',
     'rest_framework',
     'inventry',
@@ -49,14 +45,23 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'account',
-    'channels',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+   
+   
 ]
 ASGI_APPLICATION = 'boda.asgi.application'
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('http://127.0.0.1:8000/', 6379)],  # Replace with your Redis server's host and port
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                "redis://:k9EkP6DPTdYXyUAcNd8NGC3d912Ij0hi@redis-19064.c279.us-central1-1.gce.redns.redis-cloud.com:19064"
+            ],
         },
     },
 }
@@ -71,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'boda.urls'
 
@@ -202,9 +208,9 @@ SIMPLE_JWT = {
 
 
 
-CORS_ALLOWED_ORIGINS = [
+# CORS_ALLOWED_ORIGINS = [
 
-    "http://localhost:8080",
-    "http://127.0.0.1:9000",
-]
+#     "http://localhost:8080",
+#     "http://127.0.0.1:9000",
+# ]
 

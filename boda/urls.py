@@ -26,4 +26,5 @@ urlpatterns = [
     path('inventry/v1/', include('inventry.urls')),
     path('api/', include('account.urls')),
     
+    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
