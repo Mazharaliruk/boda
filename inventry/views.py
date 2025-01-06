@@ -27,6 +27,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         instance.delete()
 
     def broadcast_category_update(self, action, category):
+        print("Broadcasting category update... action:", action, "category:", category)
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             "categories",  # This is the group name

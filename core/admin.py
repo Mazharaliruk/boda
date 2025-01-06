@@ -73,7 +73,7 @@ class AIRecommendationAdmin(admin.ModelAdmin):
     
     
 class ChatRoomAdmin(admin.ModelAdmin):
-    list_display = ('user_id1', 'user_id2', 'created_at', 'updated_at', 'room_status', 'room_type')
+    list_display = ('name','user_id1', 'user_id2', 'admin_id', 'created_at', 'updated_at', 'room_status', 'room_type')
     list_filter = ['created_at', 'room_status', 'room_type']
     
     

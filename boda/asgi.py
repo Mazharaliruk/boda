@@ -11,13 +11,23 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "boda.settings")
 # is populated before importing code that may import ORM models.
 django_asgi_app = get_asgi_application()
 
-from inventry.routing import websocket_urlpatterns
+from account.authmiddleware import JWTAuthMiddleware
+from inventry.routing import category_url_patterns
+from core.routing import cor_url_patterns
+
+# Combine all WebSocket URL patterns
+websocket_urlpatterns = [
+    *category_url_patterns,
+    *cor_url_patterns,
+]
 
 application = ProtocolTypeRouter(
     {
         "http": django_asgi_app,
-        "websocket": AuthMiddlewareStack(
-            AuthMiddlewareStack(URLRouter(websocket_urlpatterns))
-        ),
+        "websocket": JWTAuthMiddleware(  # Wrap the WebSocket routes with your middleware
+        AuthMiddlewareStack(
+            URLRouter(websocket_urlpatterns)
+        )
+    ),
     }
 )

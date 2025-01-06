@@ -138,6 +138,8 @@ class AdminProfile(models.Model):
     permissions = models.TextField(blank=True)  # Add fields as needed
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return str(self.id)
     
     
     # Signals to Create Profile on User Creation
