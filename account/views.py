@@ -1,3 +1,4 @@
+from tokenize import TokenError
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -7,8 +8,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from account.models import(
     AdminProfile, 
-    CustomerProfile, 
+    CustomerProfile,
+    User, 
     VendorProfile)
+from account.permissions import IsAdmin
 from account.serializers import(
     AdminProfileSerializer,
     CustomerProfileSerializer,
@@ -39,22 +42,57 @@ class UserRegistration(APIView):
             return Response(status=status.HTTP_200_OK, data={"token":token,"message": "Registration successfully"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-# user login view
+    
+    
 class UserLogin(APIView):
     def post(self, request, format=None):
         serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid(raise_exception= True):
+        if serializer.is_valid(raise_exception=True):
             email = serializer.data.get("email")
             password = serializer.data.get("password")
+            role = serializer.data.get("role")
+
+            # Authenticate user
             user = authenticate(email=email, password=password)
             if user is not None:
-                token = get_tokens_for_user(user)
-                return Response(status=status.HTTP_200_OK, data={"token":token,"message": "Login successfully"})
+                # Check if the user's role matches the provided role
+                if hasattr(user, "role") and user.role == role:
+                    token = get_tokens_for_user(user)
+                    return Response(
+                        status=status.HTTP_200_OK,
+                        data={"token": token, "message": "Login successfully"}
+                    )
+                else:
+                    return Response(
+                        status=status.HTTP_403_FORBIDDEN,
+                        data={"message": "Invalid role for this user"}
+                    )
             else:
-                return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Invalid credentials email or password"})
+                return Response(
+                    status=status.HTTP_404_NOT_FOUND,
+                    data={"message": "Invalid credentials: email or password"}
+                )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     
+    
+class UserLogout(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        try:
+            refresh_token = request.data.get("refresh_token")
+            if not refresh_token:
+                return Response({"message": "Refresh token is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Blacklist the refresh token
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
+        except TokenError as e:
+            return Response({"message": "Invalid or expired token", "error": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            return Response({"message": "Logout failed", "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
@@ -100,4 +138,80 @@ class UserProfile(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+# fetch all users 
+class UserList(APIView):
+    permission_classes = [IsAdmin]
+
+    def get(self, request, format=None):
+        customers = CustomerProfile.objects.filter(user__role='customer')
+        serializer = CustomerProfileSerializer(customers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    
+class CustomerByUser(APIView):
+    permission_classes = [IsAdmin]  # Adjust permissions based on your requirements
+
+    # Fetch customer by the related user ID
+    def get(self, request, user, format=None):
+        customer = get_object_or_404(CustomerProfile, user=user)
+        serializer = CustomerProfileSerializer(customer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# fetch customer by id
+class CustomerById(APIView):
+    permission_classes = [IsAdmin]
+
+    # Fetch customer by ID
+    def get(self, request, pk, format=None):
+        customer = get_object_or_404(CustomerProfile, pk=pk)
+        serializer = CustomerProfileSerializer(customer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # Update customer by ID
+    # Update customer by ID
+    def put(self, request, pk, format=None):
+        customer = get_object_or_404(CustomerProfile, pk=pk)
+        serializer = CustomerProfileSerializer(customer, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+
+            # Update CustomerProfile fields
+            customer.profile_picture = validated_data.get('profile_picture', customer.profile_picture)
+            customer.address = validated_data.get('address', customer.address)
+            customer.save()
+
+            # Update related User fields
+            user_data = validated_data.get('user', {})
+            user = customer.user
+            user.name = user_data.get('name', user.name)
+            # user.email = user_data.get('email', user.email)
+            # user.phone = user_data.get('phone', user.phone)
+            # user.date_of_birth = user_data.get('date_of_birth', user.date_of_birth)
+            user.save()
+
+            return Response(
+                {"message": "Customer updated successfully", "data": serializer.data},
+                status=status.HTTP_200_OK
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Delete customer by ID
+    def delete(self, request, pk, format=None):
+        customer = get_object_or_404(CustomerProfile, pk=pk)
+        customer.delete()
+        return Response({"message": "Customer deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+#fetch all vendors
+class VendorList(APIView):
+    permission_classes = [IsAdmin]
+
+    def get(self, request, format=None):
+        vendors = VendorProfile.objects.filter(user__role='vendor')
+        serializer = VendorProfileSerializer(vendors, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

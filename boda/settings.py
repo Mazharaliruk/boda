@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
-
+import os
 from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -34,12 +34,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'daphne',
+    'channels',
     'corsheaders',
     'rest_framework',
     'inventry',
@@ -47,8 +43,28 @@ INSTALLED_APPS = [
     'core',
     'sales',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'account',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+   
+   
 ]
+ASGI_APPLICATION = 'boda.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                "redis://:k9EkP6DPTdYXyUAcNd8NGC3d912Ij0hi@redis-19064.c279.us-central1-1.gce.redns.redis-cloud.com:19064"
+            ],
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'boda.urls'
 
@@ -136,7 +153,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'account.User'
 
 # Default primary key field type
@@ -147,11 +167,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # rest_framework_simplejwt Settings
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=20),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(weeks=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(weeks=1),
     "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
-    "UPDATE_LAST_LOGIN": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
 
     "ALGORITHM": "HS256",
     "SIGNING_KEY": settings.SECRET_KEY,
@@ -188,8 +208,9 @@ SIMPLE_JWT = {
 
 
 
-CORS_ALLOWED_ORIGINS = [
+# CORS_ALLOWED_ORIGINS = [
 
-    "http://localhost:8080",
-    "http://127.0.0.1:9000",
-]
+#     "http://localhost:8080",
+#     "http://127.0.0.1:9000",
+# ]
+

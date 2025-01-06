@@ -6,8 +6,9 @@ from sales.models import Order, Transaction, Payment, PaymentGetway
 # Customize your model here.
 class OrderAdmin(admin.ModelAdmin):
     list_display = [
-        'id',  'created_at', 'updated_at', 'total_amount', 'currency', 'status',
-        'shipping_address', 'billing_address', 'discount_amount', 'tax_amount', 'note'
+        'id', 'order_id', 'created_at', 'updated_at', 'total_amount', 'currency', 'status',
+        'shipping_address', 'billing_address', 'discount_amount', 'tax_amount', 'note', 'order_date',
+        'customer_id', 'vendor_id', 'service', 'event',
     ]
     search_fields = ['currency']
         
@@ -16,7 +17,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 class TransactionAdmin(admin.ModelAdmin):
    list_display = [
-        'id', 'created_at', 'updated_at', 'amount', 'currency', 'status', 'order',
+        'id', 'transaction_id', 'created_at', 'updated_at', 'amount', 'currency', 'status', 'order',
         'payment_getway', 'transcation_date', 'getway_response', 'paymment_method', 'retry_count'
     ]
    search_fields = ['currency','id']

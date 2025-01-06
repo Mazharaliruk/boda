@@ -27,13 +27,17 @@ class BusinessAdmin(admin.ModelAdmin):
     
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'image_url',  'business')
+    list_display = ('id','name',  'created_at', 'updated_at','description', 
+                    'image_url',  'business', 'user', 'location', 
+                    'start_date', 'end_date', 'price', 'currency',
+                    'guest_count', 'budget', 'status',
+                    'maximum_capacity', 'minimum_capacity')
     search_fields = ['name', 'slug']
     list_filter = ['created_at']
     
     
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description','is_active', 'created_at', 'updated_at','user', 'category')
+    list_display = ('name', 'description','is_active', 'created_at', 'updated_at','vendor')
     search_fields = ['name',]
     list_filter = ['created_at','is_active']
     
@@ -45,8 +49,8 @@ class EventServiceAdmin(admin.ModelAdmin):
     
     
 class EventMediaAdmin(admin.ModelAdmin):
-    list_display = ('event', 'media_url', 'created_at', 'updated_at','media_type')
-    search_fields = ['event', 'media_type']
+    list_display = ('event_service', 'media_file', 'created_at', 'updated_at','media_type')
+    search_fields = ['event_service', 'media_type']
     list_filter = ['created_at','media_type']
     
     
@@ -57,18 +61,19 @@ class NotificationAdmin(admin.ModelAdmin):
     
     
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ('service', 'user', 'comment', 'created_at', 'updated_at')
-    search_fields = ['service', 'user']
+    list_display = (
+        'id', 'service', 'user', 'comment', 'created_at', 'updated_at','rating', 'vendor', 'event')
+    search_fields = ['service', 'user'] 
     list_filter = ['created_at']
     
 class AIRecommendationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'recommendation_data', 'created_at', 'updated_at')
+    list_display = ('user', 'recommendation_data', 'created_at', 'updated_at',)
     search_fields = ['user', 'recommendation_data']
     list_filter = ['created_at']
     
     
 class ChatRoomAdmin(admin.ModelAdmin):
-    list_display = ('user_id1', 'user_id2', 'created_at', 'updated_at', 'room_status', 'room_type')
+    list_display = ('name','user_id1', 'user_id2', 'admin_id', 'created_at', 'updated_at', 'room_status', 'room_type')
     list_filter = ['created_at', 'room_status', 'room_type']
     
     
