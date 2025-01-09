@@ -55,6 +55,9 @@ class Event(models.Model):
     user = models.ForeignKey(
         "account.CustomerProfile", on_delete=models.CASCADE, null=True, blank=True
     )  # where role is customer
+    discount = models.ForeignKey(
+        "inventry.Discount", on_delete=models.SET_NULL, null=True, blank=True
+    )
     location = models.TextField(blank=True, null=True)
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
@@ -112,6 +115,7 @@ class EventService(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     vendor = models.ForeignKey("account.VendorProfile", on_delete=models.CASCADE)
+    
     quantity = models.IntegerField(null=True, blank=True)
     price = models.FloatField(default=0.0)
     currency = models.CharField(

@@ -71,14 +71,14 @@ class PaymentMethod(models.TextChoices):
 #  Payment Getway
 class PaymentGetway(models.Model):
     name = models.CharField(max_length=100)
-    api_key = models.TextField(null=True)
-    secret_key = models.TextField(null=True)
+    api_key = models.TextField(null=True, blank=True)
+    secret_key = models.TextField(null=True, blank= True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    base_url = models.URLField(null=True)
+    base_url = models.URLField(null=True, blank=True)
     status = models.BooleanField(default=False)
-    transaction_fee = models.FloatField(null=True, blank=True)
-    additional_config = models.TextField(null=True, blank=True)
+    transaction_fee = models.FloatField(null=True, blank=True, default=0.0)
+    additional_config = models.JSONField(default=dict, blank=True)
     supported_currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.PKR)
     def __str__(self):
         return self.name
