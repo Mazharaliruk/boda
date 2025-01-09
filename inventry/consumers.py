@@ -17,7 +17,7 @@ class CategoryConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         # Handle incoming messages (optional, you can add logic here)
-
+            
         pass
 
     # Receive message from the 'categories' group

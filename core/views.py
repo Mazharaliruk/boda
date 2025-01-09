@@ -193,6 +193,7 @@ class MessagesViewSet(viewsets.ModelViewSet):
         if message.room:
             room_group_name = f"room_{message.room.id}"
             print(f"Broadcasting to room group: {room_group_name}")
+            print(action)
             async_to_sync(channel_layer.group_send)(
                 room_group_name,
                 {
