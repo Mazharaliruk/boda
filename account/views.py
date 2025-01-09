@@ -41,6 +41,8 @@ class UserRegistration(APIView):
             token = get_tokens_for_user(user)
             return Response(status=status.HTTP_200_OK, data={"token":token,"message": "Registration successfully"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
     
     
     
@@ -141,6 +143,29 @@ class UserProfile(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     
+class UserDelete(APIView):
+    permission_classes = [IsAdmin]
+
+    def delete(self, request, pk, format=None):
+        try:
+            # Attempt to retrieve and delete the user by ID
+            user = get_object_or_404(User, pk=pk)
+            user.delete()
+            return Response(
+                {"message": "User deleted successfully."},
+                status=status.HTTP_200_OK  # Use 200 to include a message in the response body
+            )
+        except Exception as e:
+            # Log and handle unexpected errors
+            return Response(
+                {"message": "An error occurred while deleting the user.", "error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+            
+
+    
+    
 # fetch all users 
 class UserList(APIView):
     permission_classes = [IsAdmin]
@@ -214,4 +239,6 @@ class VendorList(APIView):
     def get(self, request, format=None):
         vendors = VendorProfile.objects.filter(user__role='vendor')
         serializer = VendorProfileSerializer(vendors, many=True)
+        if not serializer.data:
+            return Response({"message": "No vendors found."}, status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.data, status=status.HTTP_200_OK)
