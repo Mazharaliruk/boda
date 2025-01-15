@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 import os
+from django.db import connections
+from django.db.utils import OperationalError
 from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cgz_t^%&aa&ehwp7679c5_!hszi7o_=5(ad5g)nwn0-0*dgm71'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -104,12 +106,33 @@ WSGI_APPLICATION = 'boda.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+try:
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'boda_db',
+            'USER': 'rui_master_user',
+            'PASSWORD': 'Boda.Rui123',
+            'HOST': 'boda-db.cf2ckimykrec.eu-north-1.rds.amazonaws.com',
+            'PORT': '5432'
+           
+            
+        }
     }
-}
+    connections['default'].cursor()
+    print("Database connection successful!")
+
+except OperationalError as e:
+    print(f"Database connection failed: {e}")
+
 
 
 # Password validation
@@ -208,6 +231,16 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+
+AWS_ACCESS_KEY_ID = 'AKIAT4GVRMKMFURMNX7H'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'bodabucketrui'
+AWS_S3_SIGNATURE_NAME = 's3v4'
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERIFY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 # CORS_ALLOWED_ORIGINS = [
