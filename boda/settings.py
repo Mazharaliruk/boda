@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cgz_t^%&aa&ehwp7679c5_!hszi7o_=5(ad5g)nwn0-0*dgm71'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -232,9 +232,9 @@ SIMPLE_JWT = {
 }
 
 
-AWS_ACCESS_KEY_ID = 'AKIAT4GVRMKMFURMNX7H'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'bodabucketrui'
+AWS_ACCESS_KEY_ID = 'AKIAT4GVRMKMKXQGVZDZ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'bodabucketjeol'
 AWS_S3_SIGNATURE_NAME = 's3v4'
 AWS_S3_REGION_NAME = 'eu-north-1'
 AWS_S3_FILE_OVERWRITE = False
@@ -248,4 +248,3 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 #     "http://localhost:8080",
 #     "http://127.0.0.1:9000",
 # ]
-
